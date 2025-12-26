@@ -11,3 +11,12 @@ services:
     image: mongo:6
     ports:
       - "27017:27017"
+
+  gateway:
+    build:
+      context: ./services/gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - rabbitmq
+      - mongo
