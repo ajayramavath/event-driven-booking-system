@@ -16,7 +16,6 @@ export async function initRabbit() {
       channel = await conn.createChannel();
 
       await channel.assertExchange("events", "topic", { durable: true });
-
       console.log("RabbitMQ connected");
       return;
     } catch (err) {
