@@ -7,7 +7,7 @@ services:
       - "5672:5672"
       - "15672:15672"
     environment:
-      - RABBITMQ_LOG_LEVEL=warning
+      - RABBITMQ_LOG=warning
 
   mongo:
     image: mongo:6
@@ -33,3 +33,14 @@ services:
       - rabbitmq
       - mongo
       - gateway
+  
+  payment-service:
+    build:
+      context: ./services/payment-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - mongo
+      - rabbitmq
+      - gateway
+      - booking-service

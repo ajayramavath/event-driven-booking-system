@@ -1,5 +1,5 @@
 import amqp, { type ConsumeMessage } from 'amqplib';
-import { BookingIntent } from './models/booking-intent';
+import { handleBookingIntentCreated, handlePaymentCaptured } from './eventHandlers';
 
 let channel: amqp.Channel | null = null;
 
@@ -61,26 +61,15 @@ export async function handleEvent(message: ConsumeMessage) {
     case "booking.intent.created":
       await handleBookingIntentCreated(payload);
       return
+    case "payment.captured":
+      await handlePaymentCaptured(payload);
+      return
     default:
       console.log(`Event with payload ${payload} received`);
       return;
   }
 }
 
-async function handleBookingIntentCreated(payload: any) {
-  const { userId, intentId, amount } = payload;
-  if (!userId || !intentId || !amount) {
-    console.error("Incorrect Payload");
-    return
-  }
-  const bookingIntent = new BookingIntent({
-    intentId: intentId,
-    userId: userId,
-    amount: amount,
-    status: 'pending'
-  });
-  await bookingIntent.save();
-}
 
 
 

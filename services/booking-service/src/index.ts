@@ -14,7 +14,8 @@ async function start() {
   await initRabbit();
   await initMongo();
   await startConsuming("booking-events", [
-    "booking.intent.created"
+    "booking.intent.created",
+    "payment.captured"
   ])
   await app.listen({ port: 3001, host: '0.0.0.0' }).catch(err => {
     console.error(err)

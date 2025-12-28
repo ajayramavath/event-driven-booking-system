@@ -5,7 +5,7 @@ const bookingIntentSchema = new Schema({
   intentId: { type: String, require: true, unique: true },
   amount: { type: String, require: true },
   eventPublishedAt: { type: String, require: true },
-  status: { type: String, enum: ['pending', 'verified', 'failed'], default: 'pending' }
+  status: { type: String, enum: ['pending', 'confirmed', 'failed', "payment_received_first"], default: 'pending' }
 }, {
   timestamps: true
 })
