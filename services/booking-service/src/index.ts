@@ -1,10 +1,14 @@
+import "./telemetry"
 import Fastify from "fastify";
 import { initRabbit, startConsuming } from "./rabbit";
 import { initMongo } from "./mongoose";
+import { trace } from '@opentelemetry/api';
 
 const app = Fastify({
   logger: true,
 })
+
+export const tracer = trace.getTracer("booking-service")
 
 app.get("/health", () => {
   return { status: "ok" };

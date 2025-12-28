@@ -1,4 +1,5 @@
 import amqp from 'amqplib';
+import { context, propagation, trace } from "@opentelemetry/api";
 
 let channel: amqp.Channel | null = null;
 
@@ -29,11 +30,13 @@ export async function initRabbit() {
 
 export async function publishEvent(routingKey: string, payload: any) {
   if (!channel) throw new Error('Rabbit not initialized');
+  const headers: Record<string, any> = {};
+  propagation.inject(context.active(), headers);
   channel.publish(
     'events',
     routingKey,
     Buffer.from(JSON.stringify(payload)),
-    { persistent: true }
+    { headers, persistent: true }
   );
   console.log("Event published:", routingKey, payload);
 }

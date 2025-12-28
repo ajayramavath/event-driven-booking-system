@@ -15,6 +15,12 @@ services:
       - "27017:27017"
     command: mongod --quiet --logpath /dev/null
 
+  jaeger:
+    image: jaegertracing/all-in-one:1.54
+    ports:
+      - "16686:16686"
+      - "4318:4318"
+
   gateway:
     build:
       context: ./services/gateway

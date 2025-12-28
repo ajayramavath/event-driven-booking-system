@@ -1,3 +1,4 @@
+import { context, propagation } from '@opentelemetry/api';
 import amqp, { type ConsumeMessage } from 'amqplib';
 import { handleBookingIntentCreated, handlePaymentCaptured } from './eventHandlers';
 
@@ -26,6 +27,19 @@ export async function initRabbit() {
   console.error("Error connectting to rabbitmq in booking-service");
 }
 
+export async function publishEvent(routingKey: string, payload: any) {
+  if (!channel) throw new Error('Rabbit not initialized');
+  const headers: Record<string, any> = {};
+  propagation.inject(context.active(), headers);
+  channel.publish(
+    'events',
+    routingKey,
+    Buffer.from(JSON.stringify(payload)),
+    { headers, persistent: true }
+  );
+  console.log("Event published:", routingKey, payload);
+}
+
 export async function startConsuming(queueName: string, routingKeys: string[]) {
   if (!channel) {
     console.error("Channel is null");
@@ -41,16 +55,21 @@ export async function startConsuming(queueName: string, routingKeys: string[]) {
   await channel.consume(queueName, async (message: ConsumeMessage | null) => {
     if (!message) return null;
     try {
+      const ctx = propagation.extract(
+        context.active(),
+        message.properties.headers
+      )
       const payload = JSON.parse(message.content.toString());
       console.log(`Booking event with payload ${JSON.stringify(payload)} received`);
-      await handleEvent(message);
+      context.with(ctx, async () => {
+        await handleEvent(message);
+      })
       channel?.ack(message);
     } catch (error) {
       console.error(`Error processing event: ${error}`);
       channel?.nack(message, false, true);
     }
   })
-
 }
 
 export async function handleEvent(message: ConsumeMessage) {

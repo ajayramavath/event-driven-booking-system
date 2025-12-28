@@ -13,6 +13,11 @@
     "typescript": "^5"
   },
   "dependencies": {
+    "@opentelemetry/auto-instrumentations-node": "^0.67.3",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.208.0",
+    "@opentelemetry/instrumentation-fastify": "^0.53.1",
+    "@opentelemetry/instrumentation-http": "^0.208.0",
+    "@opentelemetry/sdk-node": "^0.208.0",
     "@types/amqplib": "^0.10.8",
     "amqplib": "^0.10.9",
     "fastify": "^5.6.2"
