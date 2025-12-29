@@ -110,35 +110,6 @@ If **payment arrives before booking intent**:
 
 ---
 
-## Observability (Distributed Tracing)
-
-Below are real distributed traces captured using OpenTelemetry and Jaeger, showing
-end-to-end request and event flow across services.
-
-### Booking Intent → Booking Service
-
-![Jaeger Trace 1](./trace-1.png)
-
----
-
-### Payment Captured → Booking Confirmation
-
-![Jaeger Trace 2](./trace-2.png)
-
----
-
-### Duplicate / Out-of-Order Event Handling
-
-![Jaeger Trace 3](./trace-4.png)
-
----
-
-### Failure Handling (Booking Failed)
-
-![Jaeger Trace 4](./trace-4.png)
-
----
-
 ### Failure & Compensation
 
 If any validation fails (e.g. amount mismatch):
@@ -151,25 +122,6 @@ This ensures:
 - No free bookings
 - No lost money
 - Eventual correctness
-
----
-
-## Booking Intent State Machine
-
-pending
-│
-├── payment_received_first
-│ │
-│ ├── confirmed
-│ └── failed
-│
-├── confirmed
-└── failed
-
-All transitions are:
-- Idempotent
-- Order-independent
-- Crash-safe
 
 ---
 
@@ -206,6 +158,32 @@ Each business flow produces a **single distributed trace** spanning:
 - Event consume
 - Business decisions (`wait`, `confirm`, `fail`, `noop`, `duplicate`)
 - Error paths
+
+Below are real distributed traces captured using OpenTelemetry and Jaeger, showing
+end-to-end request and event flow across services.
+
+### Booking Intent → Booking Service
+
+![Jaeger Trace 1](./trace-1.png)
+
+---
+
+### Payment Captured → Booking Confirmation
+
+![Jaeger Trace 2](./trace-2.png)
+
+---
+
+### Duplicate / Out-of-Order Event Handling
+
+![Jaeger Trace 3](./trace-4.png)
+
+---
+
+### Failure Handling (Booking Failed)
+
+![Jaeger Trace 4](./trace-4.png)
+
 
 ---
 
