@@ -176,7 +176,7 @@ end-to-end request and event flow across services.
 
 ### Duplicate / Out-of-Order Event Handling
 
-![Jaeger Trace 3](./trace-4.png)
+![Jaeger Trace 3](./trace-3.png)
 
 ---
 
