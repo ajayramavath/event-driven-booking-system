@@ -16,9 +16,10 @@ app.post('/booking/intent', async (req, reply) => {
   const body = req.body as {
     userId: string;
     amount: number;
+    intentId: string | undefined
   };
 
-  const intentId = crypto.randomUUID();
+  const intentId = body.intentId || crypto.randomUUID();
 
   await tracer.startActiveSpan("gateway.booking.intent", async (span) => {
     try {
@@ -40,7 +41,10 @@ app.post('/booking/intent', async (req, reply) => {
   })
 
   return {
-    message: 'booking intent received (stub)',
+    message: 'booking intent received',
+    intentId,
+    amount: body.amount,
+    userId: body.userId
   };
 });
 

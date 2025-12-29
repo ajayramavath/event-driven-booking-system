@@ -1,0 +1,25 @@
+{
+  "name": "scripts",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "devDependencies": {
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  },
+  "dependencies": {
+    "axios": "^1.13.2",
+    "mongoose": "^9.1.0"
+  },
+  "scripts": {
+    "trivial": "bun run src/trivial-path.ts",
+    "payment-first": "bun run src/payment-first.ts",
+    "amount-mismatch": "bun run src/amount-mismatch.ts",
+    "duplicate-events": "bun run src/duplicate-events.ts",
+    "booking-down": "bun run src/booking-service-down.ts",
+    "booking-recovery": "bun run src/booking-service-recovery.ts",
+    "all": "bun run src/trivial-path.ts && bun run src/payment-first.ts && bun run src/amount-mismatch.ts && bun run src/duplicate-events.ts"
+  }
+}
