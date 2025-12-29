@@ -94,6 +94,7 @@ sequenceDiagram
         RabbitMQ->>PaymentService: booking.failed
         PaymentService->>PaymentService: initiate refund
     end
+```
 
 ---
 
